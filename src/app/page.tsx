@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Upload, Users, UserMinus, UserCheck, Shield, ChevronRight, Copy, Terminal, Activity, Layers } from "lucide-react";
 import { parseInstagramJson, compareProfiles, AnalysisResults } from "@/lib/analyzer";
+import ThemeSwitcher, { Theme } from "@/components/ThemeSwitcher";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -17,6 +18,17 @@ export default function IGStudio() {
   const [activeTab, setActiveTab] = useState<"non-followers" | "fans" | "mutuals" | "automation">("non-followers");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState(false);
+  const [theme, setTheme] = useState<Theme>("pro");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("ig_studio_theme") as Theme;
+    if (savedTheme) setTheme(savedTheme);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("ig_studio_theme", theme);
+  }, [theme]);
 
   const handleAnalyze = async () => {
     if (followersFiles.length === 0 || followingFiles.length === 0) {
@@ -162,15 +174,21 @@ export default function IGStudio() {
         <div className="inline-flex items-center justify-center p-3 mb-4 rounded-2xl glass border-primary/20">
           <Activity className="w-8 h-8 text-primary animate-pulse" />
         </div>
-        <h1 className="text-5xl font-bold tracking-tight mb-3">
+        <h1 className={cn(
+          "text-5xl font-bold tracking-tight mb-3",
+          theme === "pixel" && "text-primary"
+        )}>
           IG <span className="text-gradient">Studio</span>
         </h1>
-        <p className="text-slate-400 text-lg">Premium social hygiene and account balance terminal.</p>
+        <p className={cn(
+          "text-lg font-medium",
+          theme === "instagram" ? "text-slate-600" : "text-slate-400"
+        )}>Premium social hygiene and account balance terminal.</p>
       </header>
 
       {/* Upload Section */}
       <section className="grid md:grid-cols-2 gap-6 mb-12">
-        <div className="glass p-8 rounded-3xl relative overflow-hidden group">
+        <div className={cn(theme === "instagram" ? "card-social p-6" : "card-pro p-8", "relative overflow-hidden group transition-all")}>
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
             <Users size={80} />
           </div>
@@ -180,12 +198,12 @@ export default function IGStudio() {
             multiple 
             accept=".json" 
             onChange={(e) => setFollowersFiles(Array.from(e.target.files || []))}
-            className="w-full text-sm text-slate-400 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer"
+            className="w-full text-sm text-foreground/60 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer"
           />
-          <p className="mt-2 text-xs text-slate-500">{followersFiles.length} file(s) selected</p>
+          <p className="mt-2 text-xs text-foreground/40">{followersFiles.length} file(s) selected</p>
         </div>
 
-        <div className="glass p-8 rounded-3xl relative overflow-hidden group">
+        <div className={cn(theme === "instagram" ? "card-social p-6" : "card-pro p-8", "relative overflow-hidden group transition-all")}>
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
             <UserCheck size={80} />
           </div>
@@ -195,9 +213,9 @@ export default function IGStudio() {
             multiple 
             accept=".json" 
             onChange={(e) => setFollowingFiles(Array.from(e.target.files || []))}
-            className="w-full text-sm text-slate-400 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 transition-all cursor-pointer"
+            className="w-full text-sm text-foreground/60 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 transition-all cursor-pointer"
           />
-          <p className="mt-2 text-xs text-slate-500">{followingFiles.length} file(s) selected</p>
+          <p className="mt-2 text-xs text-foreground/40">{followingFiles.length} file(s) selected</p>
         </div>
       </section>
 
@@ -205,7 +223,10 @@ export default function IGStudio() {
         <button 
           onClick={handleAnalyze}
           disabled={isAnalyzing}
-          className="bg-gradient-to-r from-primary to-secondary text-white px-12 py-5 rounded-2xl font-bold text-lg shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 flex items-center gap-3"
+          className={cn(
+            "text-white px-12 py-5 rounded-2xl font-bold text-lg transition-all flex items-center gap-3",
+            theme === "instagram" ? "bg-primary shadow-lg shadow-primary/20" : "bg-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+          )}
         >
           {isAnalyzing ? "Processing Matrix..." : "RUN INITIAL ANALYSIS"}
           <ChevronRight size={20} />
@@ -216,31 +237,31 @@ export default function IGStudio() {
         <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <StatCard label="Followers" value={results.followers.length} icon={<Users className="text-blue-400" />} />
-            <StatCard label="Following" value={results.following.length} icon={<UserCheck className="text-green-400" />} />
-            <StatCard label="Mutuals" value={results.mutuals.length} icon={<Layers className="text-purple-400" />} />
-            <StatCard label="Imbalance" value={results.nonFollowers.length} icon={<UserMinus className="text-red-400" />} highlight />
+            <StatCard theme={theme} label="Followers" value={results.followers.length} icon={<Users className="text-blue-400" />} />
+            <StatCard theme={theme} label="Following" value={results.following.length} icon={<UserCheck className="text-green-400" />} />
+            <StatCard theme={theme} label="Mutuals" value={results.mutuals.length} icon={<Layers className="text-purple-400" />} />
+            <StatCard theme={theme} label="Imbalance" value={results.nonFollowers.length} icon={<UserMinus className="text-red-400" />} highlight />
           </div>
 
           {/* Result Tabs */}
-          <div className="glass rounded-[2rem] overflow-hidden">
-            <div className="flex border-b border-card-border p-2 gap-2">
-              <TabButton active={activeTab === "non-followers"} onClick={() => setActiveTab("non-followers")}>Non-Followers</TabButton>
-              <TabButton active={activeTab === "fans"} onClick={() => setActiveTab("fans")}>Your Fans</TabButton>
-              <TabButton active={activeTab === "automation"} onClick={() => setActiveTab("automation")}>Automation Assistant</TabButton>
+          <div className={cn(theme === "instagram" ? "card-social" : "card-pro", "overflow-hidden")}>
+            <div className={cn("flex p-2 gap-2 border-b", theme === "instagram" ? "border-slate-200 bg-slate-50" : "border-card-border")}>
+              <TabButton theme={theme} active={activeTab === "non-followers"} onClick={() => setActiveTab("non-followers")}>Non-Followers</TabButton>
+              <TabButton theme={theme} active={activeTab === "fans"} onClick={() => setActiveTab("fans")}>Your Fans</TabButton>
+              <TabButton theme={theme} active={activeTab === "automation"} onClick={() => setActiveTab("automation")}>Automation Assistant</TabButton>
             </div>
 
             <div className="p-8">
               {activeTab === "non-followers" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
-                  {results.nonFollowers.map(user => <UserRow key={user} username={user} />)}
+                  {results.nonFollowers.map(user => <UserRow theme={theme} key={user} username={user} />)}
                   {results.nonFollowers.length === 0 && <EmptyState text="Everyone you follow follows you back!" />}
                 </div>
               )}
 
               {activeTab === "fans" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
-                  {results.fans.map(user => <UserRow key={user} username={user} />)}
+                  {results.fans.map(user => <UserRow theme={theme} key={user} username={user} />)}
                   {results.fans.length === 0 && <EmptyState text="No pending follow requests or fans." />}
                 </div>
               )}
@@ -293,29 +314,40 @@ export default function IGStudio() {
           </div>
         </div>
       )}
+
+      {/* Theme Switcher */}
+      <ThemeSwitcher currentTheme={theme} onThemeChange={setTheme} />
     </main>
   );
 }
 
-function StatCard({ label, value, icon, highlight = false }: { label: string, value: number, icon: React.ReactNode, highlight?: boolean }) {
+function StatCard({ label, value, icon, highlight = false, theme }: { label: string, value: number, icon: React.ReactNode, highlight?: boolean, theme?: Theme }) {
   return (
-    <div className="glass p-5 rounded-2xl group flex items-center gap-4 border-l-4 border-l-transparent hover:border-l-primary/50 transition-all">
-      <div className="p-3 bg-slate-900 rounded-xl group-hover:scale-110 transition-transform">{icon}</div>
+    <div className={cn(
+      theme === "instagram" ? "card-social border-none p-4" : "card-pro p-5",
+      "group flex items-center gap-4 border-l-4 border-l-transparent hover:border-l-primary/50 transition-all"
+    )}>
+      <div className={cn(
+        "p-3 rounded-xl transition-transform group-hover:scale-110",
+        theme === "instagram" ? "bg-slate-100" : "bg-foreground/5"
+      )}>{icon}</div>
       <div>
-        <div className={cn("text-2xl font-bold", highlight && "text-red-400")}>{value.toLocaleString()}</div>
-        <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">{label}</div>
+        <div className={cn("text-2xl font-bold", highlight && "text-accent")}>{value.toLocaleString()}</div>
+        <div className="text-[10px] uppercase font-bold text-foreground/40 tracking-wider">{label}</div>
       </div>
     </div>
   );
 }
 
-function TabButton({ children, active, onClick }: { children: React.ReactNode, active: boolean, onClick: () => void }) {
+function TabButton({ children, active, onClick, theme }: { children: React.ReactNode, active: boolean, onClick: () => void, theme?: Theme }) {
   return (
     <button 
       onClick={onClick}
       className={cn(
         "px-6 py-3 text-sm font-semibold rounded-xl transition-all",
-        active ? "bg-white text-slate-950 shadow-xl" : "text-slate-400 hover:bg-white/5"
+        active 
+          ? (theme === "instagram" ? "bg-primary text-white shadow-md" : "bg-primary text-white shadow-xl") 
+          : "text-foreground/40 hover:bg-foreground/5"
       )}
     >
       {children}
@@ -323,10 +355,13 @@ function TabButton({ children, active, onClick }: { children: React.ReactNode, a
   );
 }
 
-function UserRow({ username }: { username: string }) {
+function UserRow({ username, theme }: { username: string, theme?: Theme }) {
   return (
-    <div className="glass p-3 px-5 rounded-xl flex items-center justify-between group glass-hover">
-      <span className="font-medium text-slate-200 truncate pr-2">@{username}</span>
+    <div className={cn(
+      theme === "instagram" ? "card-social border-slate-100 p-2 px-4" : "card-pro p-3 px-5",
+      "flex items-center justify-between group glass-hover"
+    )}>
+      <span className="font-medium text-foreground truncate pr-2">@{username}</span>
       <a 
         href={`https://instagram.com/${username}`} 
         target="_blank" 

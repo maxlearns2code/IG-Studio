@@ -1,29 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a;
+  /* Default: Cyberpunk Pro */
+  --background: #020617;
   --foreground: #f8fafc;
-  --primary: #e1306c;
-  --secondary: #405de6;
-  --accent: #f472b6;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.1);
+  --primary: #06b6d4; /* Neon Cyan */
+  --secondary: #d946ef; /* Magenta */
+  --accent: #facc15; /* Yellow */
+  --card-bg: rgba(2, 6, 23, 0.7);
+  --card-border: rgba(6, 182, 212, 0.2);
+  --radius: 12px;
+  --font-main: var(--font-geist-sans);
+  --glow-color: rgba(6, 182, 212, 0.3);
 }
 
-@theme inline {
+[data-theme='instagram'] {
+  --background: #fafafa;
+  --foreground: #262626;
+  --primary: #0095f6;
+  --secondary: #8e8e8e;
+  --accent: #ed4956;
+  --card-bg: #ffffff;
+  --card-border: #dbdbdb;
+  --radius: 3px;
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --glow-color: transparent;
+}
+
+[data-theme='pixel'] {
+  --background: #000000;
+  --foreground: #00ff00;
+  --primary: #ff00ff;
+  --secondary: #00ffff;
+  --accent: #ffff00;
+  --card-bg: #111111;
+  --card-border: #00ff00;
+  --radius: 0px;
+  --font-main: var(--font-press-start), cursive;
+}
+
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
+  --radius-xl: var(--radius);
 }
 
 body {
-  background: radial-gradient(circle at top left, #1e293b, #0f172a, #020617);
+  background: var(--background);
   color: var(--foreground);
   min-height: 100vh;
-  selection-background-color: var(--primary);
-  selection-color: white;
+  font-family: var(--font-main);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+[data-theme='pro'] body {
+  background: radial-gradient(circle at top left, #0f172a, #020617, #000000);
+}
+
+[data-theme='instagram'] body {
+  background: #fafafa;
 }
 
 @layer components {
@@ -32,6 +70,7 @@ body {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--card-border);
+    border-radius: var(--radius);
   }
   
   .glass-hover {
@@ -39,16 +78,86 @@ body {
   }
   
   .glass-hover:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: color-mix(in srgb, var(--card-bg), white 5%);
+    border-color: color-mix(in srgb, var(--card-border), white 10%);
     transform: translateY(-2px);
   }
 
   .text-gradient {
+    background: linear-gradient(45deg, #06b6d4, #d946ef, #fbbf24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  [data-theme='instagram'] .text-gradient {
     background: linear-gradient(45deg, #f09433, #e31683, #bc1888, #8a3ab9, #4c68d7);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* Theme Specific Cards */
+  .card-pro {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 0 20px var(--glow-color);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+  }
+
+  .card-social {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+  }
+
+  [data-theme='pixel'] .text-gradient {
+    background: none;
+    -webkit-text-fill-color: var(--primary);
+    text-shadow: 2px 2px 0px var(--secondary);
+  }
+
+  /* CRT Scanlines */
+  .pixel-overlay {
+    display: none;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    z-index: 9999;
+  }
+
+  [data-theme='pixel'] .pixel-overlay {
+    display: block;
+    animation: flicker 0.15s infinite;
+  }
+
+  @keyframes flicker {
+    0% { opacity: 0.9; }
+    100% { opacity: 1; }
+  }
+
+  /* Cyber Grid */
+  .cyber-grid {
+    display: none;
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+  }
+
+  [data-theme='pro'] .cyber-grid {
+    display: block;
   }
 }
 
@@ -62,10 +171,6 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--card-border);
   border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
 }
