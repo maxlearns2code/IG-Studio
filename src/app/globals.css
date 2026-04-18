@@ -22,9 +22,9 @@
   --primary: #e1306c; /* Instagram Pink */
   --secondary: #833ab4; /* Instagram Purple */
   --accent: #f56040; /* Instagram Orange */
-  --card-bg: rgba(255, 255, 255, 0.85);
-  --card-border: rgba(225, 48, 108, 0.1);
-  --radius: 8px;
+  --card-bg: rgba(255, 255, 255, 0.65);
+  --card-border: rgba(225, 48, 108, 0.15);
+  --radius: 20px;
   --radius-full-val: 9999px;
   --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --glow-color: transparent;
@@ -130,8 +130,11 @@ body::before {
 
   .card-social {
     background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
+    box-shadow: 0 10px 30px -10px rgba(225, 48, 108, 0.1);
   }
 
   [data-theme='pixel'] .text-gradient {

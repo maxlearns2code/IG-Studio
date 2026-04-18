@@ -171,7 +171,10 @@ export default function IGStudio() {
     <main className="max-w-6xl mx-auto p-6 lg:p-12">
       {/* Header */}
       <header className="mb-12 text-center">
-        <div className="inline-flex items-center justify-center p-3 mb-4 rounded-2xl glass border-primary/20">
+        <div className={cn(
+          "inline-flex items-center justify-center p-3 mb-4 glass border-primary/20 transition-all",
+          theme === "instagram" ? "rounded-full bg-gradient-to-tr from-accent/20 to-primary/20" : "rounded-2xl"
+        )}>
           <Activity className="w-8 h-8 text-primary animate-pulse" />
         </div>
         <h1 className={cn(
@@ -198,7 +201,10 @@ export default function IGStudio() {
             multiple 
             accept=".json" 
             onChange={(e) => setFollowersFiles(Array.from(e.target.files || []))}
-            className="w-full text-sm text-foreground/60 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer"
+            className={cn(
+              "w-full text-sm text-foreground/60 file:mr-4 file:py-3 file:px-6 file:border-0 file:text-sm file:font-semibold transition-all cursor-pointer",
+              theme === "instagram" ? "file:rounded-full file:bg-primary/10 file:text-primary hover:file:bg-primary/20" : "file:rounded-xl file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+            )}
           />
           <p className="mt-2 text-xs text-foreground/40">{followersFiles.length} file(s) selected</p>
         </div>
@@ -213,7 +219,10 @@ export default function IGStudio() {
             multiple 
             accept=".json" 
             onChange={(e) => setFollowingFiles(Array.from(e.target.files || []))}
-            className="w-full text-sm text-foreground/60 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 transition-all cursor-pointer"
+            className={cn(
+              "w-full text-sm text-foreground/60 file:mr-4 file:py-3 file:px-6 file:border-0 file:text-sm file:font-semibold transition-all cursor-pointer",
+              theme === "instagram" ? "file:rounded-full file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20" : "file:rounded-xl file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20"
+            )}
           />
           <p className="mt-2 text-xs text-foreground/40">{followingFiles.length} file(s) selected</p>
         </div>
@@ -224,8 +233,8 @@ export default function IGStudio() {
           onClick={handleAnalyze}
           disabled={isAnalyzing}
           className={cn(
-            "text-white px-12 py-5 rounded-2xl font-bold text-lg transition-all flex items-center gap-3",
-            theme === "instagram" ? "bg-primary shadow-lg shadow-primary/20" : "bg-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100",
+            "text-white px-12 py-5 font-bold text-lg transition-all flex items-center gap-3",
+            theme === "instagram" ? "bg-gradient-to-r from-accent to-primary shadow-xl shadow-primary/25 rounded-full" : "bg-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/20 hover:scale-105 rounded-2xl",
             theme === "pixel" && "pixel-border border-white/50 text-shadow-pixel"
           )}
         >
@@ -329,8 +338,8 @@ function StatCard({ label, value, icon, highlight = false, theme }: { label: str
       "group flex items-center gap-4 border-l-4 border-l-transparent hover:border-l-primary/50 transition-all"
     )}>
       <div className={cn(
-        "p-3 rounded-xl transition-transform group-hover:scale-110",
-        theme === "instagram" ? "bg-slate-100" : "bg-foreground/5"
+        "p-3 transition-transform group-hover:scale-110",
+        theme === "instagram" ? "bg-slate-100 rounded-full" : "bg-foreground/5 rounded-xl"
       )}>{icon}</div>
       <div>
         <div className={cn("text-2xl font-bold", highlight && "text-accent")}>{value.toLocaleString()}</div>
@@ -347,8 +356,8 @@ function TabButton({ children, active, onClick, theme }: { children: React.React
       className={cn(
         "px-6 py-3 text-sm font-semibold rounded-xl transition-all",
         active 
-          ? (theme === "instagram" ? "bg-primary text-white shadow-md" : "bg-primary text-white shadow-xl") 
-          : "text-foreground/40 hover:bg-foreground/5"
+          ? (theme === "instagram" ? "bg-gradient-to-r from-accent to-primary text-white shadow-lg rounded-full" : "bg-primary text-white shadow-xl rounded-xl") 
+          : cn("text-foreground/40 hover:bg-foreground/5", theme === "instagram" ? "rounded-full" : "rounded-xl")
       )}
     >
       {children}
