@@ -225,7 +225,8 @@ export default function IGStudio() {
           disabled={isAnalyzing}
           className={cn(
             "text-white px-12 py-5 rounded-2xl font-bold text-lg transition-all flex items-center gap-3",
-            theme === "instagram" ? "bg-primary shadow-lg shadow-primary/20" : "bg-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+            theme === "instagram" ? "bg-primary shadow-lg shadow-primary/20" : "bg-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100",
+            theme === "pixel" && "pixel-border border-white/50 text-shadow-pixel"
           )}
         >
           {isAnalyzing ? "Processing Matrix..." : "RUN INITIAL ANALYSIS"}

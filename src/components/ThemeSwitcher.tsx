@@ -37,8 +37,9 @@ export default function ThemeSwitcher({ currentTheme, onThemeChange }: ThemeSwit
               className={cn(
                 "group relative flex items-center justify-center p-3 rounded-full transition-all duration-300",
                 isActive 
-                  ? "bg-primary text-white shadow-lg shadow-primary/25" 
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-primary text-white shadow-lg shadow-primary/25 ring-2 ring-primary/20" 
+                  : "text-slate-400 hover:text-white hover:bg-white/5",
+                currentTheme === "pixel" && isActive && "ring-0 border-2 border-white shadow-[4px_4px_0px_rgba(0,0,0,0.5)]"
               )}
               title={theme.label}
             >
