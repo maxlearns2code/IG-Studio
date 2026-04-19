@@ -41,7 +41,7 @@ export const generateUserscript = (results: AnalysisResults | null) => {
         }
 
         const currentTarget = TARGETS[index];
-        const currentPath = window.location.pathname.replace(/\\//g, '');
+        const currentPath = window.location.pathname.replace(/\//g, '');
 
         if (currentPath === currentTarget) {
             console.log("[IG-Studio] Target: @" + currentTarget);
@@ -88,5 +88,5 @@ export const generateUserscript = (results: AnalysisResults | null) => {
     }
 
     setTimeout(() => { injectUI(); processCurrentPage(); }, 4000);
-})();\`;
+})();`;
 };
