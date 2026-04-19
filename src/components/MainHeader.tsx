@@ -1,7 +1,7 @@
 import React from "react";
 import { Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Theme } from "./ThemeSwitcher";
+import { Theme } from "@/types";
 
 interface MainHeaderProps {
   theme: Theme;

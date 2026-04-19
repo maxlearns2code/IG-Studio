@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { Theme } from "./ThemeSwitcher";
+import { Theme } from "@/types";
 import { cn } from "@/lib/utils";
 
 interface ThemeBackgroundProps {

@@ -1,8 +1,8 @@
 import React from "react";
 import { Users, UserCheck, UserMinus, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Theme } from "./ThemeSwitcher";
-import { AnalysisResults as ResultsType } from "@/lib/analyzer";
+import { Theme, AnalysisResults as ResultsType } from "@/types";
+import { AnalysisResults as ResultsTypeAnalyzer } from "@/lib/analyzer";
 
 interface AnalysisResultsProps {
   theme: Theme;

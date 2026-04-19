@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📱 IG Studio | Premium Social Analysis
 
-## Getting Started
+**IG Studio** is a high-performance, aesthetically-driven social hygiene and account balance terminal built for Instagram power users. It provides deep insights into your social reciprocation and automated tools for maintaining a healthy following-to-follower ratio.
 
-First, run the development server:
+![IG Studio Banner](public/backgrounds/cyberpunk.webp)
 
+## ✨ Core Features
+
+- **Multi-Theme Experience**: Switch between **Pro (Cyberpunk)**, **Social (Instagram)**, and **Retro (16-bit)** themes with unique interactive mouse lighting and widescreen panoramic backgrounds.
+- **Deep Analysis**: Compare your Followers vs. Following lists to identify non-reciprocal accounts, fans, and mutual connections.
+- **Safe Automation**: Generate personalized userscripts for Tampermonkey with built-in randomized delays (60-360s) to keep your account safe while unfollowing.
+- **Privacy First**: All processing is done locally in your browser. Your data never leaves your machine.
+
+## 🚀 Getting Started
+
+### 1. Installation
 ```bash
-npm run dev
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Run Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) for the premium experience.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Usage
+1. Export your **Followers** and **Following** data as JSON files (from Instagram or a scraper).
+2. Upload them to the Data Terminal.
+3. Pulse **"RUN INITIAL ANALYSIS"**.
+4. Use the **Automation Assistant** to generate your safe unfollow script.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Design Philosophy
+IG Studio is designed to feel like a high-end terminal.
+- **Performance**: Optimized with `next/image` and GPU-accelerated CSS animations.
+- **Interactivity**: Theme-aware mouse lighting (Scanner / Prism / Square).
+- **Aesthetics**: Glassmorphism, ultra-wide panoramas, and cinematic typography.
 
-## Learn More
+## 🛠️ Technology Stack
+- **Framework**: Next.js 16.2 (App Router)
+- **Styling**: Tailwind CSS 4.0
+- **Icons**: Lucide React
+- **Animation**: CSS Variables + Next.js Transactions
+- **Type Safety**: TypeScript 5.x
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Built for the next generation of social management.*

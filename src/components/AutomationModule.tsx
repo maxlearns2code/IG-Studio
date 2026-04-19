@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Shield, Terminal, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Theme } from "./ThemeSwitcher";
+import { Theme, AnalysisResults } from "@/types";
 import { generateUserscript } from "@/lib/userscript";
-import { AnalysisResults } from "@/lib/analyzer";
 
 interface AutomationModuleProps {
   theme: Theme;

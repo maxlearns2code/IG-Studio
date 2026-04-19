@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import { parseInstagramJson, compareProfiles, AnalysisResults as ResultsType } from "@/lib/analyzer";
-import ThemeSwitcher, { Theme } from "@/components/ThemeSwitcher";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { Theme } from "@/types";
 import { cn } from "@/lib/utils";
 import MainHeader from "@/components/MainHeader";
 import DataUpload from "@/components/DataUpload";

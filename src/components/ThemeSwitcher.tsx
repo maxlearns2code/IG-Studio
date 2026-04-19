@@ -2,14 +2,8 @@
 
 import React from "react";
 import { Diamond, Camera, Gamepad2 } from "lucide-react";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export type Theme = "pro" | "instagram" | "pixel";
+import { cn } from "@/lib/utils";
+import { Theme } from "@/types";
 
 interface ThemeSwitcherProps {
   currentTheme: Theme;
