@@ -190,38 +190,37 @@ body::before {
 
   [data-theme='pro'] .mouse-glow {
     opacity: 1;
-    background: radial-gradient(
-      800px circle at var(--mouse-x) var(--mouse-y),
-      rgba(0, 242, 255, 0.15),
-      rgba(255, 45, 255, 0.05) 40%,
-      transparent 80%
-    );
+    background: 
+      linear-gradient(to right, transparent calc(var(--mouse-x) - 1px), rgba(0, 242, 255, 0.4) var(--mouse-x), transparent calc(var(--mouse-x) + 1px)),
+      linear-gradient(to bottom, transparent calc(var(--mouse-y) - 1px), rgba(0, 242, 255, 0.4) var(--mouse-y), transparent calc(var(--mouse-y) + 1px)),
+      radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(0, 242, 255, 0.2), rgba(255, 45, 255, 0.05) 50%, transparent 80%);
   }
 
   [data-theme='instagram'] .mouse-glow {
     opacity: 1;
     background: radial-gradient(
-      1200px circle at var(--mouse-x) var(--mouse-y),
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 245, 245, 0.1) 25%,
-      transparent 60%
+      circle at var(--mouse-x) var(--mouse-y),
+      rgba(225, 48, 108, 0.2),
+      rgba(131, 58, 180, 0.15) 30%,
+      rgba(245, 96, 64, 0.1) 60%,
+      transparent 90%
     );
-    mix-blend-mode: overlay;
+    mix-blend-mode: color-burn; /* Enhanced iridescent feel */
   }
 
   [data-theme='pixel'] .mouse-glow {
     opacity: 1;
     background: radial-gradient(
-      300px circle at var(--mouse-x) var(--mouse-y),
-      rgba(251, 191, 36, 0.2) 0%,
-      rgba(251, 191, 36, 0.05) 70%,
-      transparent 100%
+      circle at var(--mouse-x) var(--mouse-y),
+      rgba(251, 191, 36, 0.3) 0%,
+      rgba(251, 191, 36, 0.2) 100%
     );
-    /* 8-bit pixelated mask effect */
-    mask-image: 
-      linear-gradient(to right, black 2px, transparent 2px),
-      linear-gradient(to bottom, black 2px, transparent 2px);
-    mask-size: 4px 4px;
+    mask: linear-gradient(black, black) no-repeat center;
+    mask-image: radial-gradient(square at var(--mouse-x) var(--mouse-y), black 100%, transparent 100%); /* Note: Square mask logic refined below */
+    background-image: linear-gradient(rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.2));
+    background-size: 80px 80px;
+    background-position: calc(var(--mouse-x) - 40px) calc(var(--mouse-y) - 40px);
+    background-repeat: no-repeat;
   }
 }
 
