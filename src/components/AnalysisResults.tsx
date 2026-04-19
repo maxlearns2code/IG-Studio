@@ -2,7 +2,6 @@ import React from "react";
 import { Users, UserCheck, UserMinus, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme, AnalysisResults as ResultsType } from "@/types";
-import { AnalysisResults as ResultsTypeAnalyzer } from "@/lib/analyzer";
 
 interface AnalysisResultsProps {
   theme: Theme;
@@ -22,11 +21,11 @@ export default function AnalysisResults({
   return (
     <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard theme={theme} label="Followers" value={results.followers.length} icon={<Users className="text-blue-400" />} />
-        <StatCard theme={theme} label="Following" value={results.following.length} icon={<UserCheck className="text-green-400" />} />
-        <StatCard theme={theme} label="Mutuals" value={results.mutuals.length} icon={<Layers className="text-purple-400" />} />
-        <StatCard theme={theme} label="Imbalance" value={results.nonFollowers.length} icon={<UserMinus className="text-red-400" />} highlight />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <StatCard theme={theme} label="Followers" value={results.followers.length} icon={<Users size={16} className="text-blue-400" />} />
+        <StatCard theme={theme} label="Following" value={results.following.length} icon={<UserCheck size={16} className="text-green-400" />} />
+        <StatCard theme={theme} label="Mutuals" value={results.mutuals.length} icon={<Layers size={16} className="text-purple-400" />} />
+        <StatCard theme={theme} label="Imbalance" value={results.nonFollowers.length} icon={<UserMinus size={16} className="text-red-400" />} highlight />
       </div>
 
       {/* Result Tabs */}
@@ -39,14 +38,14 @@ export default function AnalysisResults({
 
         <div className="p-8">
           {activeTab === "non-followers" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 max-h-[1400px] overflow-y-auto pr-4 custom-scrollbar">
               {results.nonFollowers.map(user => <UserRow theme={theme} key={user} username={user} />)}
               {results.nonFollowers.length === 0 && <EmptyState text="Everyone you follow follows you back!" />}
             </div>
           )}
 
           {activeTab === "fans" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 max-h-[1400px] overflow-y-auto pr-4 custom-scrollbar">
               {results.fans.map(user => <UserRow theme={theme} key={user} username={user} />)}
               {results.fans.length === 0 && <EmptyState text="No pending follow requests or fans." />}
             </div>
@@ -62,16 +61,16 @@ export default function AnalysisResults({
 function StatCard({ label, value, icon, highlight = false, theme }: { label: string, value: number, icon: React.ReactNode, highlight?: boolean, theme?: Theme }) {
   return (
     <div className={cn(
-      theme === "instagram" ? "card-social border-none p-4" : "card-pro p-5",
-      "group flex items-center gap-4 border-l-4 border-l-transparent hover:border-l-primary/50 transition-all"
+      theme === "instagram" ? "card-social border-none p-2 px-4" : "card-pro p-3 px-5",
+      "group flex items-center gap-3 border-l-4 border-l-transparent hover:border-l-primary/50 transition-all"
     )}>
       <div className={cn(
-        "p-3 transition-transform group-hover:scale-110",
-        theme === "instagram" ? "bg-slate-100 rounded-full" : "bg-foreground/5 rounded-xl"
+        "p-2 transition-transform group-hover:scale-110",
+        theme === "instagram" ? "bg-slate-100 rounded-full" : "bg-foreground/5 rounded-lg"
       )}>{icon}</div>
       <div>
-        <div className={cn("text-2xl font-bold", highlight && "text-accent")}>{value.toLocaleString()}</div>
-        <div className="text-[10px] uppercase font-bold text-foreground/40 tracking-wider">{label}</div>
+        <div className={cn("text-lg font-bold", highlight && "text-accent")}>{value.toLocaleString()}</div>
+        <div className="text-[9px] uppercase font-bold text-foreground/40 tracking-wider leading-tight">{label}</div>
       </div>
     </div>
   );
