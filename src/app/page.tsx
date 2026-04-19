@@ -9,6 +9,7 @@ import MainHeader from "@/components/MainHeader";
 import DataUpload from "@/components/DataUpload";
 import AnalysisResults from "@/components/AnalysisResults";
 import AutomationModule from "@/components/AutomationModule";
+import ThemeBackground from "@/components/ThemeBackground";
 
 export default function IGStudio() {
   const [followersFiles, setFollowersFiles] = useState<File[]>([]);
@@ -81,6 +82,7 @@ export default function IGStudio() {
 
   return (
     <main className="max-w-6xl mx-auto p-6 lg:p-12">
+      <ThemeBackground theme={theme} />
       <MainHeader theme={theme} />
       
       <DataUpload 
