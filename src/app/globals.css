@@ -204,6 +204,17 @@ body::before {
       transparent 80%
     );
   }
+
+  [data-theme='instagram'] .mouse-glow {
+    opacity: 1;
+    background: radial-gradient(
+      1200px circle at var(--mouse-x) var(--mouse-y),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 245, 245, 0.1) 25%,
+      transparent 60%
+    );
+    mix-blend-mode: overlay;
+  }
 }
 
 /* Custom scrollbar */
