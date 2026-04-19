@@ -1,4 +1,4 @@
-import { AnalysisResults } from "./analyzer";
+import { AnalysisResults } from "@/types";
 
 export const generateUserscript = (results: AnalysisResults | null) => {
   if (!results) return "";
