@@ -20,7 +20,6 @@ export default function DataUpload({
   setFollowingFiles,
   isCompact = false
 }: DataUploadProps) {
-  return (
   if (isCompact) {
     return (
       <section className="flex flex-wrap items-center justify-between gap-4 p-4 mb-4 card-pro glass backdrop-blur-md border border-white/10 rounded-2xl animate-in fade-in slide-in-from-top-4 duration-500">
