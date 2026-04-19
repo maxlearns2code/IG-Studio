@@ -36,7 +36,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col relative overflow-x-hidden">
         {children}
         <div className="pixel-overlay" />
-        <div className="cyber-grid" />
       </body>
     </html>
   );

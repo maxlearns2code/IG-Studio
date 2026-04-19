@@ -30,6 +30,21 @@ export default function IGStudio() {
     localStorage.setItem("ig_studio_theme", theme);
   }, [theme]);
 
+  // Mouse Parallax Animation
+  useEffect(() => {
+    if (theme !== "pro") return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      document.documentElement.style.setProperty("--mouse-x", `${x}%`);
+      document.documentElement.style.setProperty("--mouse-y", `${y}%`);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [theme]);
+
   const handleAnalyze = async () => {
     if (followersFiles.length === 0 || followingFiles.length === 0) {
       alert("Please upload both followers and following JSON files.");
