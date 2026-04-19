@@ -1,5 +1,5 @@
-import React from "react";
-import { Users, UserCheck, UserMinus, Layers } from "lucide-react";
+import React, { useState } from "react";
+import { Users, UserCheck, UserMinus, Layers, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme, AnalysisResults as ResultsType } from "@/types";
 
@@ -8,7 +8,7 @@ interface AnalysisResultsProps {
   results: ResultsType;
   activeTab: string;
   setActiveTab: (tab: "non-followers" | "fans" | "mutuals" | "automation") => void;
-  children?: React.ReactNode; // For the AutomationPanel which we'll pass in
+  children?: React.ReactNode;
 }
 
 export default function AnalysisResults({
@@ -18,6 +18,17 @@ export default function AnalysisResults({
   setActiveTab,
   children
 }: AnalysisResultsProps) {
+  const [visitedUsers, setVisitedUsers] = useState<Set<string>>(new Set());
+
+  const toggleVisited = (username: string) => {
+    setVisitedUsers(prev => {
+      const next = new Set(prev);
+      if (next.has(username)) next.delete(username);
+      else next.add(username);
+      return next;
+    });
+  };
+
   return (
     <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
       {/* Stats Grid */}
@@ -36,18 +47,24 @@ export default function AnalysisResults({
           <TabButton theme={theme} active={activeTab === "automation"} onClick={() => setActiveTab("automation")}>Automation Assistant</TabButton>
         </div>
 
-        <div className="p-8">
-          {activeTab === "non-followers" && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 max-h-[1400px] overflow-y-auto pr-4 custom-scrollbar">
-              {results.nonFollowers.map(user => <UserRow theme={theme} key={user} username={user} />)}
-              {results.nonFollowers.length === 0 && <EmptyState text="Everyone you follow follows you back!" />}
-            </div>
-          )}
-
-          {activeTab === "fans" && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 max-h-[1400px] overflow-y-auto pr-4 custom-scrollbar">
-              {results.fans.map(user => <UserRow theme={theme} key={user} username={user} />)}
-              {results.fans.length === 0 && <EmptyState text="No pending follow requests or fans." />}
+        <div className="p-6">
+          {(activeTab === "non-followers" || activeTab === "fans") && (
+            <div className={cn(
+              "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 pr-4 custom-scrollbar overflow-y-auto transition-all",
+              "h-[300px] content-start"
+            )}>
+              {(activeTab === "non-followers" ? results.nonFollowers : results.fans).map(user => (
+                <UserRow 
+                  theme={theme} 
+                  key={user} 
+                  username={user} 
+                  isVisited={visitedUsers.has(user)}
+                  onVisit={() => toggleVisited(user)}
+                />
+              ))}
+              {(activeTab === "non-followers" ? results.nonFollowers : results.fans).length === 0 && (
+                <EmptyState text={activeTab === "non-followers" ? "Everyone you follow follows you back!" : "No pending follow requests or fans."} />
+              )}
             </div>
           )}
 
@@ -92,24 +109,27 @@ function TabButton({ children, active, onClick, theme }: { children: React.React
   );
 }
 
-function UserRow({ username, theme }: { username: string, theme?: Theme }) {
+function UserRow({ username, theme, isVisited, onVisit }: { username: string, theme?: Theme, isVisited: boolean, onVisit: () => void }) {
   return (
-    <div className={cn(
-      theme === "instagram" ? "card-social border-slate-100 p-2 px-4" : "card-pro p-3 px-5",
-      "flex items-center justify-between group glass-hover"
-    )}>
-      <span className="font-medium text-foreground truncate pr-2">@{username}</span>
-      <a 
-        href={`https://instagram.com/${username}`} 
-        target="_blank" 
-        className="text-[10px] font-bold text-primary uppercase opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-      >
-        View Profile
-      </a>
-    </div>
+    <a 
+      href={`https://instagram.com/${username}`} 
+      target="_blank" 
+      onClick={onVisit}
+      className={cn(
+        theme === "instagram" ? "card-social border-slate-100 p-2" : "card-pro p-2 bg-foreground/5",
+        "flex items-center justify-between group transition-all duration-300 hover:scale-[1.02] border-transparent hover:border-primary/30",
+        isVisited && "opacity-25 grayscale saturate-0"
+      )}
+    >
+      <span className={cn(
+        "text-[11px] font-medium truncate pr-1 transition-colors",
+        isVisited ? "text-foreground/40" : "text-foreground group-hover:text-primary"
+      )}>@{username}</span>
+      <ExternalLink size={10} className="opacity-0 group-hover:opacity-100 text-primary transition-opacity" />
+    </a>
   );
 }
 
 function EmptyState({ text }: { text: string }) {
-  return <div className="col-span-full py-12 text-center text-slate-500 font-medium italic">{text}</div>;
+  return <div className="col-span-full py-12 text-center text-slate-500 font-medium italic text-sm">{text}</div>;
 }
