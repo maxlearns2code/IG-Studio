@@ -215,6 +215,21 @@ body::before {
     );
     mix-blend-mode: overlay;
   }
+
+  [data-theme='pixel'] .mouse-glow {
+    opacity: 1;
+    background: radial-gradient(
+      300px circle at var(--mouse-x) var(--mouse-y),
+      rgba(251, 191, 36, 0.2) 0%,
+      rgba(251, 191, 36, 0.05) 70%,
+      transparent 100%
+    );
+    /* 8-bit pixelated mask effect */
+    mask-image: 
+      linear-gradient(to right, black 2px, transparent 2px),
+      linear-gradient(to bottom, black 2px, transparent 2px);
+    mask-size: 4px 4px;
+  }
 }
 
 /* Custom scrollbar */
