@@ -62,8 +62,8 @@
 
 body {
   background-image: var(--bg-image);
-  background-size: 110%; /* Slightly larger for parallax margin */
-  background-position: calc(50% + (var(--mouse-x) - 50%) * 0.02) calc(50% + (var(--mouse-y) - 50%) * 0.02);
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: var(--foreground);
@@ -184,6 +184,25 @@ body::before {
   @keyframes flicker {
     0% { opacity: 0.9; }
     100% { opacity: 1; }
+  }
+
+  .mouse-glow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  [data-theme='pro'] .mouse-glow {
+    opacity: 1;
+    background: radial-gradient(
+      800px circle at var(--mouse-x) var(--mouse-y),
+      rgba(0, 242, 255, 0.15),
+      rgba(255, 45, 255, 0.05) 40%,
+      transparent 80%
+    );
   }
 }
 

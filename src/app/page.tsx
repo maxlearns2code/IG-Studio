@@ -30,10 +30,8 @@ export default function IGStudio() {
     localStorage.setItem("ig_studio_theme", theme);
   }, [theme]);
 
-  // Mouse Parallax Animation
+  // Mouse Tracking Animation
   useEffect(() => {
-    if (theme !== "pro") return;
-
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
