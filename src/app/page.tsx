@@ -93,27 +93,33 @@ export default function IGStudio() {
       <ThemeBackground theme={theme} />
       <MainHeader theme={theme} />
       
-      <DataUpload 
-        theme={theme}
-        followersFiles={followersFiles}
-        setFollowersFiles={setFollowersFiles}
-        followingFiles={followingFiles}
-        setFollowingFiles={setFollowingFiles}
-      />
+      <div className={cn("transition-all duration-700", results ? "opacity-90 scale-95" : "opacity-100 scale-100")}>
+        <DataUpload 
+          theme={theme}
+          followersFiles={followersFiles}
+          setFollowersFiles={setFollowersFiles}
+          followingFiles={followingFiles}
+          setFollowingFiles={setFollowingFiles}
+          isCompact={!!results}
+        />
 
-      <div className="flex justify-center mb-16">
-        <button 
-          onClick={handleAnalyze}
-          disabled={isAnalyzing}
-          className={cn(
-            "text-white px-12 py-5 font-bold text-lg transition-all flex items-center gap-3",
-            theme === "instagram" ? "bg-gradient-to-r from-accent to-primary shadow-xl shadow-primary/25 rounded-full" : "bg-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/20 hover:scale-105 rounded-2xl",
-            theme === "pixel" && "pixel-border border-white/50 text-shadow-pixel"
-          )}
-        >
-          {isAnalyzing ? "Processing Matrix..." : "RUN INITIAL ANALYSIS"}
-          <ChevronRight size={20} />
-        </button>
+        <div className={cn("flex justify-center transition-all duration-500", results ? "mb-6" : "mb-16")}>
+          <button 
+            onClick={handleAnalyze}
+            disabled={isAnalyzing}
+            className={cn(
+              "text-white font-bold transition-all flex items-center gap-3",
+              results 
+                ? "px-8 py-3 text-sm opacity-60 hover:opacity-100" 
+                : "px-12 py-5 text-lg",
+              theme === "instagram" ? "bg-gradient-to-r from-accent to-primary shadow-xl rounded-full" : "bg-gradient-to-r from-primary to-secondary shadow-2xl hover:scale-105 rounded-2xl",
+              theme === "pixel" && "pixel-border border-white/50 text-shadow-pixel"
+            )}
+          >
+            {isAnalyzing ? "Processing Matrix..." : (results ? "RE-RUN ANALYSIS" : "RUN INITIAL ANALYSIS")}
+            <ChevronRight size={results ? 16 : 20} />
+          </button>
+        </div>
       </div>
 
       {results && (
