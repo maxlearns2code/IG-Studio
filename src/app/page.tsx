@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
-import { parseInstagramJson, compareProfiles, AnalysisResults as ResultsType } from "@/lib/analyzer";
+import { parseInstagramJson, compareProfiles } from "@/lib/analyzer";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
-import { Theme } from "@/types";
+import { Theme, AnalysisResults as ResultsType } from "@/types";
 import { cn } from "@/lib/utils";
 import MainHeader from "@/components/MainHeader";
 import DataUpload from "@/components/DataUpload";
@@ -31,13 +31,20 @@ export default function IGStudio() {
     localStorage.setItem("ig_studio_theme", theme);
   }, [theme]);
 
-  // Mouse Tracking
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
+      
+      // Standard coordinates
       document.documentElement.style.setProperty("--mouse-x", `${x}%`);
       document.documentElement.style.setProperty("--mouse-y", `${y}%`);
+
+      // Snapped coordinates (for 8-bit theme) - 40x40 grid
+      const snappedX = Math.round(x / 2.5) * 2.5;
+      const snappedY = Math.round(y / 2.5) * 2.5;
+      document.documentElement.style.setProperty("--mouse-x-snap", `${snappedX}%`);
+      document.documentElement.style.setProperty("--mouse-y-snap", `${snappedY}%`);
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
