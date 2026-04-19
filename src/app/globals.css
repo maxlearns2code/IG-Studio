@@ -188,40 +188,97 @@ body::before {
     transition: opacity 1s ease;
   }
 
+  /* --- HIGH-FIDELITY THEMATIC MOUSE EFFECTS --- */
+
+  /* Cyberpunk (Pro): The Neural Hex-Grid */
   [data-theme='pro'] .mouse-glow {
     opacity: 1;
     background: 
-      linear-gradient(to right, transparent calc(var(--mouse-x) - 1px), rgba(0, 242, 255, 0.4) var(--mouse-x), transparent calc(var(--mouse-x) + 1px)),
-      linear-gradient(to bottom, transparent calc(var(--mouse-y) - 1px), rgba(0, 242, 255, 0.4) var(--mouse-y), transparent calc(var(--mouse-y) + 1px)),
-      radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(0, 242, 255, 0.2), rgba(255, 45, 255, 0.05) 50%, transparent 80%);
+      /* Hex Grid Pattern Layer */
+      radial-gradient(
+        500px circle at var(--mouse-x) var(--mouse-y),
+        rgba(0, 242, 255, 0.15) 0%,
+        transparent 100%
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM15 10.38l12 6.93v13.84l-12 6.91L3 31.15V17.31l12-6.93z' fill='%2300f2ff' fill-opacity='0.1'/%3E%3C/svg%3E");
+    mask-image: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), black 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), black 0%, transparent 80%);
+    
+    /* Crosshairs Layer */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(to right, transparent calc(var(--mouse-x) - 1px), rgba(0, 242, 255, 0.4) var(--mouse-x), transparent calc(var(--mouse-x) + 1px)),
+        linear-gradient(to bottom, transparent calc(var(--mouse-y) - 1px), rgba(0, 242, 255, 0.4) var(--mouse-y), transparent calc(var(--mouse-y) + 1px));
+      animation: scan-flicker 4s infinite;
+    }
   }
 
+  /* Social (Instagram): Liquid Glass Prism */
   [data-theme='instagram'] .mouse-glow {
     opacity: 1;
-    background: radial-gradient(
-      circle at var(--mouse-x) var(--mouse-y),
+    background: conic-gradient(
+      from 0deg at var(--mouse-x) var(--mouse-y),
       rgba(225, 48, 108, 0.2),
-      rgba(131, 58, 180, 0.15) 30%,
-      rgba(245, 96, 64, 0.1) 60%,
-      transparent 90%
+      rgba(131, 58, 180, 0.2),
+      rgba(245, 96, 64, 0.2),
+      rgba(225, 48, 108, 0.2)
     );
-    mix-blend-mode: color-burn; /* Enhanced iridescent feel */
+    animation: rotate-shimmer 8s linear infinite;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    mask-image: radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), black 20%, transparent 100%);
+    -webkit-mask-image: radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), black 20%, transparent 100%);
   }
 
+  /* Retro (Pixel): CRT Scan-Beam with Pixel Snapping */
   [data-theme='pixel'] .mouse-glow {
-    opacity: 1;
-    background: radial-gradient(
-      circle at var(--mouse-x) var(--mouse-y),
-      rgba(251, 191, 36, 0.3) 0%,
-      rgba(251, 191, 36, 0.2) 100%
+    opacity: 0.8;
+    background: linear-gradient(
+      rgba(251, 191, 36, 0.25) 50%, 
+      rgba(251, 191, 36, 0.15) 50%
     );
-    mask: linear-gradient(black, black) no-repeat center;
-    mask-image: radial-gradient(square at var(--mouse-x) var(--mouse-y), black 100%, transparent 100%); /* Note: Square mask logic refined below */
-    background-image: linear-gradient(rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.2));
-    background-size: 80px 80px;
-    background-position: calc(var(--mouse-x) - 40px) calc(var(--mouse-y) - 40px);
-    background-repeat: no-repeat;
+    background-size: 100% 4px; /* Scanlines */
+    background-image: 
+      linear-gradient(rgba(0,0,0,0.1) 50%, transparent 50%),
+      radial-gradient(circle at var(--mouse-x-snap) var(--mouse-y-snap), rgba(251, 191, 36, 0.3) 0%, transparent 100%);
+    background-size: 100% 4px, 100% 100%;
+    
+    /* The Square Snapshot */
+    &::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      left: var(--mouse-x-snap);
+      top: var(--mouse-y-snap);
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(251, 191, 36, 0.4);
+      background: rgba(251, 191, 36, 0.05);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+      animation: crt-flicker 0.1s infinite;
+    }
   }
+}
+
+@keyframes scan-flicker {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.4; }
+  98% { opacity: 0.8; }
+  99% { opacity: 1; transform: scaleY(1.02); }
+}
+
+@keyframes rotate-shimmer {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.9; }
+  50% { opacity: 1; }
+  100% { opacity: 0.85; }
 }
 
 /* Custom scrollbar */
