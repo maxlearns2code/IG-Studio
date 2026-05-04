@@ -16,8 +16,8 @@ export const generateUserscript = (results: AnalysisResults | null) => {
 (function() {
     'use strict';
     const TARGETS = ${targets};
-    const MIN_DELAY = 60;
-    const MAX_DELAY = 360;
+    const MIN_DELAY = 30;
+    const MAX_DELAY = 300;
     const STORAGE_INDEX_KEY = 'ig_studio_unfollow_index';
     const STORAGE_ACTIVE_KEY = 'ig_studio_is_active';
 
