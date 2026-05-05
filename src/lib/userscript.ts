@@ -7,7 +7,7 @@ export const generateUserscript = (results: AnalysisResults | null) => {
 // @name         IG-Studio Safe Unfollower
 // @namespace    http://tampermonkey.net/
 // @version      1.0
-// @description  Automates unfollowing non-reciprocal accounts with safe random delays (60-360s).
+// @description  Automates unfollowing non-reciprocal accounts with safe random delays (30-300s).
 // @author       IG-Studio
 // @match        https://*.instagram.com/*
 // @grant        none

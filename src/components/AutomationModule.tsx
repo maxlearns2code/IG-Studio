@@ -25,7 +25,7 @@ export default function AutomationModule({ theme, results }: AutomationModulePro
         <Shield className="text-amber-500 shrink-0" />
         <div>
           <h4 className="font-bold text-amber-200">Safe Automation Protocol</h4>
-          <p className="text-sm text-amber-200/70 mt-1">This userscript runs directly in your browser with randomized 60-360s delays to avoid detection.</p>
+          <p className="text-sm text-amber-200/70 mt-1">This userscript runs directly in your browser with randomized 30-300s delays to avoid detection.</p>
         </div>
       </div>
 
