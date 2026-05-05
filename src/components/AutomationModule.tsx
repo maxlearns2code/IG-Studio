@@ -38,6 +38,10 @@ export default function AutomationModule({ theme, results }: AutomationModulePro
           <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold">2</div>
           <span>Create a new script in **Tampermonkey**</span>
         </div>
+        <div className="flex items-center gap-3 text-slate-300">
+          <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold">3</div>
+          <span>After running, click **Download Deleted List** to sync local data</span>
+        </div>
       </div>
 
       <div className="relative group">

@@ -63,15 +63,20 @@ If you have a long list of people to unfollow, use the **Automation Assistant** 
 ---
 
 ## 🧹 Phase 4: Manual Sync & Maintenance
-Use this when you manually unfollow users and want your local JSON files to stay accurate without re-scraping everything.
+Use this when you've unfollowed users and want your local JSON files to stay accurate without re-scraping everything.
 
-1. Paste usernames you've removed into [following_deleted.json](file:///c:/Users/max/.gemini/antigravity/scratch/instagram-scraper/following_deleted.json).
-   - *Note: You can just paste the raw text copied from Instagram.*
-2. Run the sync command in your terminal:
+### 1. Get your Deleted List
+- While running the **Automation Assistant** on Instagram, click the **Download Deleted List** button on the floating panel.
+- This will save a `deleted_users.json` file to your computer.
+
+### 2. Sync with local data
+1. Open [following_deleted.json](file:///c:/Users/max/.gemini/antigravity/scratch/instagram-scraper/following_deleted.json).
+2. Paste the contents of your downloaded `deleted_users.json` into this file.
+3. Run the sync command in your terminal:
    ```powershell
    python sync_deleted.py
    ```
-3. Your `instagram_following.json` will be updated, and the deleted list will be cleared.
+4. Your `instagram_following.json` will be updated, and the deleted list will be cleared.
 
 ---
 

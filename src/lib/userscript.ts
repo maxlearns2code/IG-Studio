@@ -20,6 +20,7 @@ export const generateUserscript = (results: AnalysisResults | null) => {
     const MAX_DELAY = 300;
     const STORAGE_INDEX_KEY = 'ig_studio_unfollow_index';
     const STORAGE_ACTIVE_KEY = 'ig_studio_is_active';
+    const STORAGE_DELETED_KEY = 'ig_studio_deleted_users';
 
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -27,6 +28,14 @@ export const generateUserscript = (results: AnalysisResults | null) => {
     async function findButtonByText(text) {
         const buttons = Array.from(document.querySelectorAll('button, div[role="button"]'));
         return buttons.find(b => b.innerText.toLowerCase().trim() === text.toLowerCase());
+    }
+
+    function logDeletedUser(username) {
+        const deleted = JSON.parse(localStorage.getItem(STORAGE_DELETED_KEY) || '[]');
+        if (!deleted.includes(username)) {
+            deleted.push(username);
+            localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(deleted));
+        }
     }
 
     async function processCurrentPage() {
@@ -53,6 +62,7 @@ export const generateUserscript = (results: AnalysisResults | null) => {
                 const confirmBtn = await findButtonByText('Unfollow');
                 if (confirmBtn) {
                     confirmBtn.click();
+                    logDeletedUser(currentTarget);
                     await sleep(randomInt(2000, 4000));
                 }
             }
@@ -68,6 +78,19 @@ export const generateUserscript = (results: AnalysisResults | null) => {
         }
     }
 
+    function downloadDeleted() {
+        const deleted = localStorage.getItem(STORAGE_DELETED_KEY) || '[]';
+        const blob = new Blob([deleted], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'deleted_users.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
     function injectUI() {
         if (document.getElementById('studio-panel')) return;
         const panel = document.createElement('div');
@@ -76,19 +99,25 @@ export const generateUserscript = (results: AnalysisResults | null) => {
         
         const active = localStorage.getItem(STORAGE_ACTIVE_KEY) === 'true';
         const idx = localStorage.getItem(STORAGE_INDEX_KEY) || '0';
+        const deletedCount = JSON.parse(localStorage.getItem(STORAGE_DELETED_KEY) || '[]').length;
         
         panel.innerHTML = \`
           <div style="font-weight:bold;margin-bottom:8px;color:#e1306c;font-size:16px">IG-STUDIO V2</div>
           <div style="font-size:11px;color:#cbd5e1;margin-bottom:12px">Targeting \${TARGETS.length} users</div>
-          <div style="font-size:13px;margin-bottom:10px">Progress: <b>\${idx}</b> / \${TARGETS.length}</div>
+          <div style="font-size:13px;margin-bottom:4px">Progress: <b>\${idx}</b> / \${TARGETS.length}</div>
+          <div style="font-size:11px;color:#10b981;margin-bottom:12px">Unfollowed this session: <b>\${deletedCount}</b></div>
           <div style="display:flex;flex-direction:column;gap:8px">
             <button id="startStop" style="background:\${active?'#ef4444':'#10b981'};color:white;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:bold">\${active?'STOP MODULE':'START MODULE'}</button>
+            <button id="downloadBtn" style="background:#3b82f6;color:white;border:none;padding:8px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:bold">Download Deleted List</button>
             <button id="resetBtn" style="background:rgba(255,255,255,0.1);color:white;border:none;padding:8px;border-radius:8px;cursor:pointer;font-size:11px">Reset progress</button>
+            <button id="clearLogBtn" style="background:rgba(239,68,68,0.1);color:#ef4444;border:none;padding:4px;border-radius:4px;cursor:pointer;font-size:9px">Clear session log</button>
           </div>\`;
           
         document.body.appendChild(panel);
         document.getElementById('startStop').onclick = () => { localStorage.setItem(STORAGE_ACTIVE_KEY, !active); window.location.reload(); };
+        document.getElementById('downloadBtn').onclick = () => { downloadDeleted(); };
         document.getElementById('resetBtn').onclick = () => { if(confirm("Reset to #0?")) { localStorage.setItem(STORAGE_INDEX_KEY, '0'); window.location.reload(); } };
+        document.getElementById('clearLogBtn').onclick = () => { if(confirm("Clear the list of deleted users?")) { localStorage.setItem(STORAGE_DELETED_KEY, '[]'); window.location.reload(); } };
     }
 
     const checkReady = setInterval(() => {
