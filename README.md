@@ -8,7 +8,7 @@
 
 - **Multi-Theme Experience**: Switch between **Pro (Cyberpunk)**, **Social (Instagram)**, and **Retro (16-bit)** themes with unique interactive mouse lighting and widescreen panoramic backgrounds.
 - **Deep Analysis**: Compare your Followers vs. Following lists to identify non-reciprocal accounts, fans, and mutual connections.
-- **Safe Automation**: Generate personalized userscripts for Tampermonkey with built-in randomized delays (60-360s) to keep your account safe while unfollowing.
+- **Safe Automation**: Generate personalized userscripts for Tampermonkey with built-in randomized delays (30-300s) to keep your account safe while unfollowing.
 - **Privacy First**: All processing is done locally in your browser. Your data never leaves your machine.
 
 ## 🚀 Getting Started
