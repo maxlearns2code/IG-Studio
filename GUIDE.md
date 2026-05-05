@@ -57,7 +57,7 @@ If you have a long list of people to unfollow, use the **Automation Assistant** 
 - **Find the Control Panel**: A floating **"IG-STUDIO"** or **"IG UNFOLLOW HELPER"** panel will appear in the **bottom-right corner**.
 - **Start**: Click **START MODULE**. 
     - The script will now navigate to each profile automatically.
-    - It will wait **30–300 seconds** between each action to keep your account safe.
+    - It will wait **30–210 seconds** between each action to keep your account safe.
 - **Stop/Reset**: You can pause the module or reset the progress (to start from the top of the list) using the buttons on the floating panel.
 
 ---
