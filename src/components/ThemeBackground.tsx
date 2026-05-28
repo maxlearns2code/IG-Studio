@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Theme } from "@/types";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,24 @@ interface ThemeBackgroundProps {
 }
 
 export default function ThemeBackground({ theme }: ThemeBackgroundProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (theme === "pro") {
+      video.playbackRate = 0.6; // Slow down the playback speed to 60%
+      video.play().catch((err) => {
+        // Autoplay can be blocked if there is no user interaction yet,
+        // although being muted helps significantly.
+        console.log("Autoplay prevented or video play failed:", err);
+      });
+    } else {
+      video.pause();
+    }
+  }, [theme]);
+
   return (
     <div className="fixed inset-0 -z-20 overflow-hidden pointer-events-none">
       {/* Cyberpunk (Pro) */}
@@ -17,13 +35,15 @@ export default function ThemeBackground({ theme }: ThemeBackgroundProps) {
           theme === "pro" ? "opacity-100" : "opacity-0"
         )}
       >
-        <Image
-          src="/backgrounds/cyberpunk.webp"
-          alt="Cyberpunk Cityscape"
-          fill
-          priority={theme === "pro"}
-          className="object-cover"
-          sizes="100vw"
+        <video
+          ref={videoRef}
+          src="/backgrounds/background.mp4"
+          poster="/backgrounds/cyberpunk.webp"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
         />
       </div>
 
