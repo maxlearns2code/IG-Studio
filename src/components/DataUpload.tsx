@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, UserCheck } from "lucide-react";
+import { Users, UserCheck, Terminal, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme } from "@/types";
 
@@ -10,6 +10,7 @@ interface DataUploadProps {
   followingFiles: File[];
   setFollowingFiles: (files: File[]) => void;
   isCompact?: boolean;
+  onOpenScraperGuide: () => void;
 }
 
 export default function DataUpload({
@@ -18,7 +19,8 @@ export default function DataUpload({
   setFollowersFiles,
   followingFiles,
   setFollowingFiles,
-  isCompact = false
+  isCompact = false,
+  onOpenScraperGuide
 }: DataUploadProps) {
   if (isCompact) {
     return (
@@ -110,6 +112,42 @@ export default function DataUpload({
           )}
         />
         <p className="mt-2 text-xs text-foreground/40">{followingFiles.length} file(s) selected</p>
+      </div>
+
+      <div className={cn(
+        theme === "instagram" ? "card-social border-slate-200/60 bg-white/70" : "card-pro border-white/5 bg-white/[0.02]",
+        theme === "pixel" && "pixel-border border-white/30 rounded-none bg-[#2d1b33] shadow-inner",
+        "col-span-full p-6 flex flex-col md:flex-row items-center justify-between gap-4 text-left relative overflow-hidden"
+      )}>
+        {theme === "pro" && <div className="absolute top-0 right-0 w-24 h-[1px] bg-gradient-to-l from-primary to-transparent" />}
+        <div className="flex items-center gap-4">
+          <div className={cn(
+            "p-3 rounded-xl hidden sm:flex items-center justify-center shrink-0",
+            theme === "instagram" ? "bg-primary/10 text-primary" : "bg-primary/20 text-primary",
+            theme === "pixel" && "border-2 border-white/20 rounded-none bg-primary/10"
+          )}>
+            <Terminal size={24} />
+          </div>
+          <div>
+            <h4 className={cn("font-bold text-sm", theme === "instagram" ? "text-slate-800" : "text-white")}>
+              Don't have your Followers & Following JSON files yet?
+            </h4>
+            <p className={cn("text-xs mt-0.5 max-w-xl", theme === "instagram" ? "text-slate-500" : "text-slate-400")}>
+              Use our secure, local-only Instagram Scraper script to scroll and download your data in seconds.
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={onOpenScraperGuide}
+          className={cn(
+            "w-full md:w-auto shrink-0 flex items-center justify-center gap-2 py-2.5 px-6 text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-300 cursor-pointer",
+            theme === "instagram" ? "bg-primary text-white hover:bg-primary/95" : "bg-primary hover:bg-primary/80 text-black shadow-md",
+            theme === "pixel" && "rounded-none border-2 border-white text-white bg-primary hover:bg-primary/90 shadow-[3px_3px_0px_rgba(0,0,0,0.5)]"
+          )}
+        >
+          <span>Get Scraper Script</span>
+          <ChevronRight size={14} />
+        </button>
       </div>
     </section>
   );

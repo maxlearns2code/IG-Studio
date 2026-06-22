@@ -8,7 +8,7 @@ This toolset allows you to extract, compare, and manage your Instagram follower 
 Use this when you want to get a fresh snapshot of your data from Instagram.
 
 1. **Open Instagram.com** on Desktop (Chrome or Firefox).
-2. Go to your **Profile** and click on your **Followers** or **Following** count.
+2. Go to **your Profile** or a **friend's Profile** (any account you wish to scrape) and click on the **Followers** or **Following** count.
 3. Press `F12` (or Right Click -> Inspect) and go to the **Console** tab.
 4. Copy the code from [instagram_scraper.js](file:///c:/Users/max/.gemini/antigravity/scratch/instagram-scraper/instagram_scraper.js).
 5. Paste it into the console and press **Enter**.
