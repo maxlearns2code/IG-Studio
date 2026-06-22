@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronRight, Terminal } from "lucide-react";
+import { ChevronRight, Terminal, Globe } from "lucide-react";
 import { parseInstagramJson, compareProfiles } from "@/lib/analyzer";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { Theme, AnalysisResults as ResultsType } from "@/types";
@@ -108,22 +108,11 @@ export default function IGStudio() {
     <main className="max-w-6xl mx-auto p-6 lg:p-12">
       <ThemeBackground theme={theme} />
       
-      {/* Symmetrical Top-Right Language Switcher */}
-      <div className="fixed top-8 right-8 z-[10000] animate-in fade-in slide-in-from-top-4 duration-500">
-        <button
-          onClick={() => setLocale(locale === "en" ? "fr" : "en")}
-          className={cn(
-            "group relative flex items-center justify-center p-2.5 px-4 rounded-full transition-all duration-300 glass bg-background/80 backdrop-blur-xl border-card-border shadow-2xl hover:scale-105 cursor-pointer text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white hover:border-primary/30",
-            theme === "pixel" && "rounded-none border-2 border-white shadow-[4px_4px_0px_rgba(0,0,0,0.5)]"
-          )}
-          title={locale === "en" ? "Switch to French" : "Passer en Anglais"}
-        >
-          <span>🌐</span>
-          <span className="ml-1 text-primary">{locale === "en" ? "FR" : "EN"}</span>
-        </button>
-      </div>
-
-      <MainHeader theme={theme} locale={locale} />
+      <MainHeader 
+        theme={theme} 
+        locale={locale} 
+        onToggleLocale={() => setLocale(locale === "en" ? "fr" : "en")} 
+      />
       
       <div className={cn("transition-all duration-700", results ? "opacity-90 scale-95" : "opacity-100 scale-100")}>
         <DataUpload 
