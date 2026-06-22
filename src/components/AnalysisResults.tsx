@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Users, UserCheck, UserMinus, Layers, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme, AnalysisResults as ResultsType } from "@/types";
+import { Locale, translations } from "@/lib/translations";
 
 interface AnalysisResultsProps {
   theme: Theme;
@@ -9,6 +10,7 @@ interface AnalysisResultsProps {
   activeTab: string;
   setActiveTab: (tab: "non-followers" | "fans" | "mutuals" | "automation") => void;
   children?: React.ReactNode;
+  locale: Locale;
 }
 
 export default function AnalysisResults({
@@ -16,9 +18,11 @@ export default function AnalysisResults({
   results,
   activeTab,
   setActiveTab,
-  children
+  children,
+  locale
 }: AnalysisResultsProps) {
   const [visitedUsers, setVisitedUsers] = useState<Set<string>>(new Set());
+  const t = translations[locale];
 
   const toggleVisited = (username: string) => {
     setVisitedUsers(prev => {
@@ -33,18 +37,18 @@ export default function AnalysisResults({
     <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-        <StatCard theme={theme} label="Followers" value={results.followers.length} icon={<Users size={16} className="text-blue-400" />} />
-        <StatCard theme={theme} label="Following" value={results.following.length} icon={<UserCheck size={16} className="text-green-400" />} />
-        <StatCard theme={theme} label="Mutuals" value={results.mutuals.length} icon={<Layers size={16} className="text-purple-400" />} />
-        <StatCard theme={theme} label="Imbalance" value={results.nonFollowers.length} icon={<UserMinus size={16} className="text-red-400" />} highlight />
+        <StatCard theme={theme} label={t.followers} value={results.followers.length} icon={<Users size={16} className="text-blue-400" />} />
+        <StatCard theme={theme} label={t.following} value={results.following.length} icon={<UserCheck size={16} className="text-green-400" />} />
+        <StatCard theme={theme} label={t.mutuals} value={results.mutuals.length} icon={<Layers size={16} className="text-purple-400" />} />
+        <StatCard theme={theme} label={t.imbalance} value={results.nonFollowers.length} icon={<UserMinus size={16} className="text-red-400" />} highlight />
       </div>
 
       {/* Result Tabs */}
       <div className={cn(theme === "instagram" ? "card-social" : "card-pro", "overflow-hidden")}>
         <div className={cn("flex p-2 gap-2 border-b", theme === "instagram" ? "border-slate-200 bg-slate-50" : "border-card-border")}>
-          <TabButton theme={theme} active={activeTab === "non-followers"} onClick={() => setActiveTab("non-followers")}>Non-Followers</TabButton>
-          <TabButton theme={theme} active={activeTab === "fans"} onClick={() => setActiveTab("fans")}>Your Fans</TabButton>
-          <TabButton theme={theme} active={activeTab === "automation"} onClick={() => setActiveTab("automation")}>Automation Assistant</TabButton>
+          <TabButton theme={theme} active={activeTab === "non-followers"} onClick={() => setActiveTab("non-followers")}>{t.tabNonFollowers}</TabButton>
+          <TabButton theme={theme} active={activeTab === "fans"} onClick={() => setActiveTab("fans")}>{t.tabFans}</TabButton>
+          <TabButton theme={theme} active={activeTab === "automation"} onClick={() => setActiveTab("automation")}>{t.tabAutomation}</TabButton>
         </div>
 
         <div className="p-6">
@@ -63,7 +67,7 @@ export default function AnalysisResults({
                 />
               ))}
               {(activeTab === "non-followers" ? results.nonFollowers : results.fans).length === 0 && (
-                <EmptyState text={activeTab === "non-followers" ? "Everyone you follow follows you back!" : "No pending follow requests or fans."} />
+                <EmptyState text={activeTab === "non-followers" ? t.emptyNonFollowers : t.emptyFans} />
               )}
             </div>
           )}
@@ -79,7 +83,7 @@ function StatCard({ label, value, icon, highlight = false, theme }: { label: str
   return (
     <div className={cn(
       theme === "instagram" ? "card-social border-none p-2 px-4" : "card-pro p-3 px-5",
-      "group flex items-center gap-3 border-l-4 border-l-transparent hover:border-l-primary/50 transition-all"
+      "group flex items-center gap-3 border-l-4 border-l-transparent hover:border-l-primary/50 transition-all text-left"
     )}>
       <div className={cn(
         "p-2 transition-transform group-hover:scale-110",
@@ -98,7 +102,7 @@ function TabButton({ children, active, onClick, theme }: { children: React.React
     <button 
       onClick={onClick}
       className={cn(
-        "px-6 py-3 text-sm font-semibold rounded-xl transition-all",
+        "px-6 py-3 text-sm font-semibold rounded-xl transition-all cursor-pointer",
         active 
           ? (theme === "instagram" ? "bg-gradient-to-r from-accent to-primary text-white shadow-lg rounded-full" : "bg-primary text-white shadow-xl rounded-xl") 
           : cn("text-foreground/40 hover:bg-foreground/5", theme === "instagram" ? "rounded-full" : "rounded-xl")
@@ -130,6 +134,7 @@ function UserRow({ username, theme, isVisited, onVisit }: { username: string, th
   );
 }
 
+// Keep it as generic container
 function EmptyState({ text }: { text: string }) {
   return <div className="col-span-full py-12 text-center text-slate-500 font-medium italic text-sm">{text}</div>;
 }

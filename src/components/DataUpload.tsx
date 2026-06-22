@@ -2,6 +2,7 @@ import React from "react";
 import { Users, UserCheck, Terminal, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme } from "@/types";
+import { Locale, translations } from "@/lib/translations";
 
 interface DataUploadProps {
   theme: Theme;
@@ -11,6 +12,7 @@ interface DataUploadProps {
   setFollowingFiles: (files: File[]) => void;
   isCompact?: boolean;
   onOpenScraperGuide: () => void;
+  locale: Locale;
 }
 
 export default function DataUpload({
@@ -20,8 +22,11 @@ export default function DataUpload({
   followingFiles,
   setFollowingFiles,
   isCompact = false,
-  onOpenScraperGuide
+  onOpenScraperGuide,
+  locale
 }: DataUploadProps) {
+  const t = translations[locale];
+
   if (isCompact) {
     return (
       <section className="flex flex-wrap items-center justify-between gap-4 p-4 mb-4 card-pro glass backdrop-blur-md border border-white/10 rounded-2xl animate-in fade-in slide-in-from-top-4 duration-500">
@@ -31,8 +36,8 @@ export default function DataUpload({
               <Users size={16} />
             </div>
             <div>
-              <div className="text-[10px] font-bold text-primary uppercase tracking-tighter opacity-70">Followers</div>
-              <div className="text-xs font-bold text-foreground">{followersFiles.length} Files</div>
+              <div className="text-[10px] font-bold text-primary uppercase tracking-tighter opacity-70">{t.followers}</div>
+              <div className="text-xs font-bold text-foreground">{followersFiles.length} {t.files}</div>
             </div>
             <input 
               type="file" multiple accept=".json" 
@@ -48,8 +53,8 @@ export default function DataUpload({
               <UserCheck size={16} />
             </div>
             <div>
-              <div className="text-[10px] font-bold text-secondary uppercase tracking-tighter opacity-70">Following</div>
-              <div className="text-xs font-bold text-foreground">{followingFiles.length} Files</div>
+              <div className="text-[10px] font-bold text-secondary uppercase tracking-tighter opacity-70">{t.following}</div>
+              <div className="text-xs font-bold text-foreground">{followingFiles.length} {t.files}</div>
             </div>
             <input 
               type="file" multiple accept=".json" 
@@ -60,7 +65,7 @@ export default function DataUpload({
         </div>
         
         <div className="text-[10px] font-medium text-foreground/30 italic hidden lg:block">
-          Click any icon to update source data
+          {t.compactUpdateTip}
         </div>
       </section>
     );
@@ -76,7 +81,7 @@ export default function DataUpload({
           <Users size={80} />
         </div>
         <div className="flex items-center justify-between mb-4">
-          <label className="block text-sm font-semibold text-primary uppercase tracking-widest">Followers Data</label>
+          <label className="block text-sm font-semibold text-primary uppercase tracking-widest">{t.followersData}</label>
         </div>
         <input 
           type="file" 
@@ -88,7 +93,7 @@ export default function DataUpload({
             theme === "instagram" ? "file:rounded-full file:bg-primary/10 file:text-primary hover:file:bg-primary/20" : "file:rounded-xl file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
           )}
         />
-        <p className="mt-2 text-xs text-foreground/40">{followersFiles.length} file(s) selected</p>
+        <p className="mt-2 text-xs text-foreground/40">{followersFiles.length} {t.fileSelected}</p>
       </div>
 
       <div className={cn(
@@ -99,7 +104,7 @@ export default function DataUpload({
           <UserCheck size={80} />
         </div>
         <div className="flex items-center justify-between mb-4">
-          <label className="block text-sm font-semibold text-secondary uppercase tracking-widest">Following Data</label>
+          <label className="block text-sm font-semibold text-secondary uppercase tracking-widest">{t.followingData}</label>
         </div>
         <input 
           type="file" 
@@ -111,7 +116,7 @@ export default function DataUpload({
             theme === "instagram" ? "file:rounded-full file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20" : "file:rounded-xl file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20"
           )}
         />
-        <p className="mt-2 text-xs text-foreground/40">{followingFiles.length} file(s) selected</p>
+        <p className="mt-2 text-xs text-foreground/40">{followingFiles.length} {t.fileSelected}</p>
       </div>
 
       <div className={cn(
@@ -130,10 +135,10 @@ export default function DataUpload({
           </div>
           <div>
             <h4 className={cn("font-bold text-sm", theme === "instagram" ? "text-slate-800" : "text-white")}>
-              Don't have your Followers & Following JSON files yet?
+              {t.noFilesTitle}
             </h4>
             <p className={cn("text-xs mt-0.5 max-w-xl", theme === "instagram" ? "text-slate-500" : "text-slate-400")}>
-              Use our secure, local-only Instagram Scraper script to scroll and download your data in seconds.
+              {t.noFilesDesc}
             </p>
           </div>
         </div>
@@ -145,7 +150,7 @@ export default function DataUpload({
             theme === "pixel" && "rounded-none border-2 border-white text-white bg-primary hover:bg-primary/90 shadow-[3px_3px_0px_rgba(0,0,0,0.5)]"
           )}
         >
-          <span>Get Scraper Script</span>
+          <span>{t.getScraperScript}</span>
           <ChevronRight size={14} />
         </button>
       </div>

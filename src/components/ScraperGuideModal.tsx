@@ -4,18 +4,21 @@ import React, { useState, useEffect } from "react";
 import { X, Copy, Download, Terminal, ChevronDown, ChevronUp, BookOpen, Shield, HelpCircle, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme } from "@/types";
+import { Locale, translations } from "@/lib/translations";
 
 interface ScraperGuideModalProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
+  locale: Locale;
 }
 
-export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGuideModalProps) {
+export default function ScraperGuideModal({ isOpen, onClose, theme, locale }: ScraperGuideModalProps) {
   const [scraperCode, setScraperCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [copyFeedback, setCopyFeedback] = useState<boolean>(false);
   const [showCodePreview, setShowCodePreview] = useState<boolean>(false);
+  const t = translations[locale];
 
   useEffect(() => {
     if (!isOpen) return;
@@ -32,13 +35,11 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
       })
       .catch((err) => {
         console.error("Error loading scraper script:", err);
-        // Fallback placeholder in case of fetch issues
         setScraperCode("// Error loading scraper script from server. Please try downloading it directly.");
         setIsLoading(false);
       });
   }, [isOpen]);
 
-  // Prevent background scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -105,19 +106,19 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
                 theme === "instagram" ? "text-slate-800 text-lg" : "text-foreground text-xl",
                 theme === "pixel" && "text-shadow-pixel text-green-400"
               )}>
-                {theme === "pixel" ? "SCRAPER ENGINE" : "Instagram Scraper Console"}
+                {theme === "pixel" ? (locale === "fr" ? "MOTEUR D'EXTRACTION" : "SCRAPER ENGINE") : t.modalTitle}
               </h2>
               <p className={cn(
                 "text-xs mt-0.5 text-left",
                 theme === "instagram" ? "text-slate-500" : "text-slate-400"
-              )}>Extract followers & following data safely in your browser.</p>
+              )}>{t.modalDesc}</p>
             </div>
           </div>
 
           <button 
             onClick={onClose}
             className={cn(
-              "p-2 rounded-lg transition-colors",
+              "p-2 rounded-lg transition-colors cursor-pointer",
               theme === "instagram" ? "text-slate-400 hover:text-slate-600 hover:bg-slate-100" : "text-slate-500 hover:text-white hover:bg-white/5",
               theme === "pixel" && "border border-white/20 rounded-none text-white hover:bg-white/10"
             )}
@@ -139,10 +140,10 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
             <Shield className="text-secondary shrink-0 mt-0.5" size={20} />
             <div>
               <h4 className={cn("font-bold text-sm", theme === "instagram" ? "text-slate-800" : "text-slate-200")}>
-                Privacy-First Extraction
+                {t.privacyTitle}
               </h4>
               <p className="text-xs mt-1 leading-relaxed opacity-80">
-                This script runs entirely inside your own browser window. No login details, passwords, or personal data are ever sent anywhere. All information remains on your local computer.
+                {t.privacyDesc}
               </p>
             </div>
           </div>
@@ -157,10 +158,10 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
             )}>
               <div>
                 <h3 className={cn("font-bold text-sm", theme === "instagram" ? "text-slate-800" : "text-white")}>
-                  Option 1: One-Click Copy
+                  {t.opt1Title}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Fastest method. Copy the script code directly to your clipboard to paste in the browser console.
+                  {t.opt1Desc}
                 </p>
               </div>
               <button
@@ -175,7 +176,7 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
                 )}
               >
                 <Copy size={14} />
-                <span>{isLoading ? "Loading Script..." : (copyFeedback ? "Copied!" : "Copy Scraper Script")}</span>
+                <span>{isLoading ? t.opt1BtnLoading : (copyFeedback ? t.opt1BtnCopied : t.opt1Btn)}</span>
               </button>
             </div>
 
@@ -187,10 +188,10 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
             )}>
               <div>
                 <h3 className={cn("font-bold text-sm", theme === "instagram" ? "text-slate-800" : "text-white")}>
-                  Option 2: Direct File Download
+                  {t.opt2Title}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Download the file to your computer. Useful if you want to open it in a text editor like Notepad.
+                  {t.opt2Desc}
                 </p>
               </div>
               <a
@@ -205,7 +206,7 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
                 )}
               >
                 <Download size={14} />
-                <span>Download .js File</span>
+                <span>{t.opt2Btn}</span>
               </a>
             </div>
           </div>
@@ -216,46 +217,42 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
               "font-bold text-sm uppercase tracking-wider",
               theme === "instagram" ? "text-slate-800" : "text-primary"
             )}>
-              Step-by-Step Instructions
+              {t.stepTitle}
             </h3>
 
             <div className="grid gap-3 relative">
               <StepItem
                 num={1}
-                title="Copy the script code"
-                desc="Click the 'Copy Scraper Script' button above to automatically copy the clean JavaScript code to your clipboard."
+                title={t.step1Title}
+                desc={t.step1Desc}
                 theme={theme}
               />
               <StepItem
                 num={2}
-                title="Go to Instagram on your desktop"
-                desc="Open Instagram.com in Google Chrome, Microsoft Edge, or Firefox on a computer (not a phone) and make sure you are logged in."
+                title={t.step2Title}
+                desc={t.step2Desc}
                 theme={theme}
               />
               <StepItem
                 num={3}
-                title="Open your Profile lists"
-                desc="Go to your profile (or the target account) and click on the 'followers' or 'following' count link to open the scrolling popup window."
+                title={t.step3Title}
+                desc={t.step3Desc}
                 theme={theme}
               />
               <StepItem
                 num={4}
-                title="Open the Developer Console"
-                desc={
-                  <span>
-                    Right-click anywhere on the page and choose <strong>Inspect</strong> (or press <strong>F12</strong> / <strong>Ctrl+Shift+I</strong> on Windows, <strong>Cmd+Option+I</strong> on Mac). Select the <strong>Console</strong> tab at the top of the panel.
-                  </span>
-                }
+                title={t.step4Title}
+                desc={t.step4Desc}
                 theme={theme}
               />
               <StepItem
                 num={5}
-                title="Paste & Press Enter"
+                title={t.step5Title}
                 desc={
                   <span>
-                    Click inside the console box at the bottom, paste (<code>Ctrl+V</code> or <code>Cmd+V</code>) the copied code, and press Enter.
+                    {t.step5Desc1}
                     <span className="block mt-1.5 text-amber-500 font-semibold text-[11px] leading-normal">
-                      ⚠️ First time? If your browser prevents pasting, you must type <code>allow pasting</code> in the console and press Enter first, then try pasting again.
+                      {t.step5Warning}
                     </span>
                   </span>
                 }
@@ -263,8 +260,8 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
               />
               <StepItem
                 num={6}
-                title="Wait for auto-download"
-                desc="The script will scroll the list and download your JSON data automatically. Use the STOP & SAVE button in the top-left if you need to stop early."
+                title={t.step6Title}
+                desc={t.step6Desc}
                 theme={theme}
                 isLast
               />
@@ -289,7 +286,7 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
             >
               <div className="flex items-center gap-2">
                 <BookOpen size={14} className="text-secondary" />
-                <span>View Scraper Code Script</span>
+                <span>{t.viewCodeBtn}</span>
               </div>
               {showCodePreview ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </button>
@@ -300,7 +297,7 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
                 theme === "instagram" ? "border-slate-200 bg-slate-50" : "border-white/5 bg-slate-950"
               )}>
                 {isLoading ? (
-                  <p className="text-xs text-slate-500 text-center py-4 font-mono animate-pulse">Loading engine code...</p>
+                  <p className="text-xs text-slate-500 text-center py-4 font-mono animate-pulse">{t.loadingEngineCode}</p>
                 ) : (
                   <pre className="text-[10px] p-3 overflow-auto max-h-48 rounded bg-slate-950 border border-white/5 font-mono text-left select-all text-slate-400 leading-normal custom-scrollbar whitespace-pre-wrap">
                     {scraperCode}
@@ -317,7 +314,7 @@ export default function ScraperGuideModal({ isOpen, onClose, theme }: ScraperGui
           theme === "instagram" ? "border-slate-100 bg-slate-50 text-slate-400" : "border-card-border text-slate-500",
           theme === "pixel" && "bg-slate-950/40 text-slate-400"
         )}>
-          Need help? Press F12 to inspect elements. Make sure to close the console when done.
+          {t.modalFooter}
         </footer>
       </div>
     </div>

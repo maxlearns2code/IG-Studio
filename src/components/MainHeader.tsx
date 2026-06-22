@@ -2,12 +2,16 @@ import React from "react";
 import { Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme } from "@/types";
+import { Locale, translations } from "@/lib/translations";
 
 interface MainHeaderProps {
   theme: Theme;
+  locale: Locale;
 }
 
-export default function MainHeader({ theme }: MainHeaderProps) {
+export default function MainHeader({ theme, locale }: MainHeaderProps) {
+  const t = translations[locale];
+
   return (
     <header className="mb-12 text-center">
       <div className={cn(
@@ -25,7 +29,7 @@ export default function MainHeader({ theme }: MainHeaderProps) {
       <p className={cn(
         "text-lg font-medium",
         theme === "instagram" ? "text-slate-600" : "text-slate-400"
-      )}>Premium social hygiene and account balance terminal.</p>
+      )}>{t.headerDescription}</p>
     </header>
   );
 }

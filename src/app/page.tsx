@@ -12,6 +12,7 @@ import AnalysisResults from "@/components/AnalysisResults";
 import AutomationModule from "@/components/AutomationModule";
 import ThemeBackground from "@/components/ThemeBackground";
 import ScraperGuideModal from "@/components/ScraperGuideModal";
+import { Locale, translations } from "@/lib/translations";
 
 export default function IGStudio() {
   const [followersFiles, setFollowersFiles] = useState<File[]>([]);
@@ -21,6 +22,7 @@ export default function IGStudio() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [theme, setTheme] = useState<Theme>("pro");
   const [isScraperModalOpen, setIsScraperModalOpen] = useState(false);
+  const [locale, setLocale] = useState<Locale>("en");
 
   // Theme Sync
   useEffect(() => {
@@ -32,6 +34,18 @@ export default function IGStudio() {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("ig_studio_theme", theme);
   }, [theme]);
+
+  // Locale Sync
+  useEffect(() => {
+    const savedLocale = localStorage.getItem("ig_studio_locale") as Locale;
+    if (savedLocale === "en" || savedLocale === "fr") setLocale(savedLocale);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("ig_studio_locale", locale);
+  }, [locale]);
+
+  const t = translations[locale];
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -54,7 +68,7 @@ export default function IGStudio() {
 
   const handleAnalyze = async () => {
     if (followersFiles.length === 0 || followingFiles.length === 0) {
-      alert("Please upload both followers and following JSON files.");
+      alert(t.alertMissingFiles);
       return;
     }
 
@@ -84,7 +98,7 @@ export default function IGStudio() {
 
     } catch (error) {
       console.error(error);
-      alert("Error parsing files. Ensure they are valid JSON.");
+      alert(t.alertParseError);
     } finally {
       setIsAnalyzing(false);
     }
@@ -93,7 +107,23 @@ export default function IGStudio() {
   return (
     <main className="max-w-6xl mx-auto p-6 lg:p-12">
       <ThemeBackground theme={theme} />
-      <MainHeader theme={theme} />
+      
+      {/* Symmetrical Top-Right Language Switcher */}
+      <div className="fixed top-8 right-8 z-[10000] animate-in fade-in slide-in-from-top-4 duration-500">
+        <button
+          onClick={() => setLocale(locale === "en" ? "fr" : "en")}
+          className={cn(
+            "group relative flex items-center justify-center p-2.5 px-4 rounded-full transition-all duration-300 glass bg-background/80 backdrop-blur-xl border-card-border shadow-2xl hover:scale-105 cursor-pointer text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white hover:border-primary/30",
+            theme === "pixel" && "rounded-none border-2 border-white shadow-[4px_4px_0px_rgba(0,0,0,0.5)]"
+          )}
+          title={locale === "en" ? "Switch to French" : "Passer en Anglais"}
+        >
+          <span>🌐</span>
+          <span className="ml-1 text-primary">{locale === "en" ? "FR" : "EN"}</span>
+        </button>
+      </div>
+
+      <MainHeader theme={theme} locale={locale} />
       
       <div className={cn("transition-all duration-700", results ? "opacity-90 scale-95" : "opacity-100 scale-100")}>
         <DataUpload 
@@ -104,6 +134,7 @@ export default function IGStudio() {
           setFollowingFiles={setFollowingFiles}
           isCompact={!!results}
           onOpenScraperGuide={() => setIsScraperModalOpen(true)}
+          locale={locale}
         />
 
         <div className={cn("flex justify-center transition-all duration-500", results ? "mb-6" : "mb-16")}>
@@ -111,7 +142,7 @@ export default function IGStudio() {
             onClick={handleAnalyze}
             disabled={isAnalyzing}
             className={cn(
-              "text-white font-bold transition-all flex items-center gap-3",
+              "text-white font-bold transition-all flex items-center gap-3 cursor-pointer",
               results 
                 ? "px-8 py-3 text-sm opacity-60 hover:opacity-100" 
                 : "px-12 py-5 text-lg",
@@ -119,7 +150,7 @@ export default function IGStudio() {
               theme === "pixel" && "pixel-border border-white/50 text-shadow-pixel"
             )}
           >
-            {isAnalyzing ? "Processing Matrix..." : (results ? "RE-RUN ANALYSIS" : "RUN INITIAL ANALYSIS")}
+            {isAnalyzing ? t.btnProcessing : (results ? t.btnReRun : t.btnRun)}
             <ChevronRight size={results ? 16 : 20} />
           </button>
         </div>
@@ -131,8 +162,9 @@ export default function IGStudio() {
           results={results} 
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          locale={locale}
         >
-          <AutomationModule theme={theme} results={results} />
+          <AutomationModule theme={theme} results={results} locale={locale} />
         </AnalysisResults>
       )}
 
@@ -146,11 +178,11 @@ export default function IGStudio() {
             "group relative flex items-center justify-center p-3 rounded-full transition-all duration-300 glass bg-background/85 backdrop-blur-xl border-card-border shadow-2xl hover:scale-105 cursor-pointer text-slate-300 hover:text-white",
             theme === "pixel" && "rounded-none border-2 border-white shadow-[4px_4px_0px_rgba(0,0,0,0.5)]"
           )}
-          title="Scraper Script & Instructions"
+          title={locale === "en" ? "Scraper Script & Instructions" : "Script de récupération & instructions"}
         >
           <Terminal size={20} className={cn("text-primary transition-transform duration-300 group-hover:scale-110", theme === "pro" && "animate-pulse")} />
           <span className="absolute bottom-full mb-3 px-3 py-1.5 bg-slate-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10 whitespace-nowrap">
-            Scraper Script
+            {locale === "en" ? "Scraper Script" : "Script"}
           </span>
         </button>
       </div>
@@ -159,6 +191,7 @@ export default function IGStudio() {
         isOpen={isScraperModalOpen} 
         onClose={() => setIsScraperModalOpen(false)} 
         theme={theme} 
+        locale={locale}
       />
     </main>
   );
