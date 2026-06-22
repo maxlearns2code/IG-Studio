@@ -127,9 +127,9 @@ export default function DataUpload({
         {theme === "pro" && <div className="absolute top-0 right-0 w-24 h-[1px] bg-gradient-to-l from-primary to-transparent" />}
         <div className="flex items-center gap-4">
           <div className={cn(
-            "p-3 rounded-xl hidden sm:flex items-center justify-center shrink-0",
-            theme === "instagram" ? "bg-primary/10 text-primary" : "bg-primary/20 text-primary",
-            theme === "pixel" && "border-2 border-white/20 rounded-none bg-primary/10"
+            "p-3 rounded-xl hidden sm:flex items-center justify-center shrink-0 shadow-inner",
+            theme === "instagram" ? "bg-slate-100 text-primary" : "bg-slate-950/70 border border-white/10 text-primary",
+            theme === "pixel" && "border-2 border-white/20 rounded-none bg-slate-950/80"
           )}>
             <Terminal size={24} />
           </div>
@@ -137,7 +137,7 @@ export default function DataUpload({
             <h4 className={cn("font-bold text-sm", theme === "instagram" ? "text-slate-800" : "text-white")}>
               {t.noFilesTitle}
             </h4>
-            <p className={cn("text-xs mt-0.5 max-w-xl", theme === "instagram" ? "text-slate-500" : "text-slate-400")}>
+            <p className={cn("text-xs mt-0.5 max-w-xl", theme === "instagram" ? "text-slate-500" : "text-white")}>
               {t.noFilesDesc}
             </p>
           </div>

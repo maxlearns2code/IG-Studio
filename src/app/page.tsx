@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronRight, Terminal, Globe } from "lucide-react";
+import { ChevronRight, Globe } from "lucide-react";
 import { parseInstagramJson, compareProfiles } from "@/lib/analyzer";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { Theme, AnalysisResults as ResultsType } from "@/types";
@@ -159,22 +159,7 @@ export default function IGStudio() {
 
       <ThemeSwitcher currentTheme={theme} onThemeChange={setTheme} />
 
-      {/* Floating Scraper Button (Symmetric to ThemeSwitcher) */}
-      <div className="fixed bottom-8 left-8 z-[10000] animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <button
-          onClick={() => setIsScraperModalOpen(true)}
-          className={cn(
-            "group relative flex items-center justify-center p-3 rounded-full transition-all duration-300 glass bg-background/85 backdrop-blur-xl border-card-border shadow-2xl hover:scale-105 cursor-pointer text-slate-300 hover:text-white",
-            theme === "pixel" && "rounded-none border-2 border-white shadow-[4px_4px_0px_rgba(0,0,0,0.5)]"
-          )}
-          title={locale === "en" ? "Scraper Script & Instructions" : "Script de récupération & instructions"}
-        >
-          <Terminal size={20} className={cn("text-primary transition-transform duration-300 group-hover:scale-110", theme === "pro" && "animate-pulse")} />
-          <span className="absolute bottom-full mb-3 px-3 py-1.5 bg-slate-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10 whitespace-nowrap">
-            {locale === "en" ? "Scraper Script" : "Script"}
-          </span>
-        </button>
-      </div>
+
 
       <ScraperGuideModal 
         isOpen={isScraperModalOpen} 
