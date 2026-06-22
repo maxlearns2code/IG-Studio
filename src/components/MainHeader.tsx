@@ -1,5 +1,4 @@
 import React from "react";
-import { Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Theme } from "@/types";
 import { Locale, translations } from "@/lib/translations";
@@ -34,19 +33,47 @@ export default function MainHeader({ theme, locale, onToggleLocale }: MainHeader
         </p>
       </div>
 
-      <div className="shrink-0 flex items-center self-start sm:self-auto">
-        <button
-          onClick={onToggleLocale}
-          className={cn(
-            "group relative inline-flex items-center justify-center gap-1.5 p-2 px-3.5 transition-all duration-300 glass bg-background/80 backdrop-blur-xl border-card-border shadow-2xl hover:scale-105 cursor-pointer text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white hover:border-primary/30",
-            theme === "instagram" ? "rounded-full" : "rounded-xl",
-            theme === "pixel" && "rounded-none border-2 border-white shadow-[4px_4px_0px_rgba(0,0,0,0.5)]"
-          )}
-          title={locale === "en" ? "Switch to French" : "Passer en Anglais"}
-        >
-          <Globe size={13} className="text-primary group-hover:animate-pulse" />
-          <span className="text-primary leading-none">{locale === "en" ? "FR" : "EN"}</span>
-        </button>
+      <div className="shrink-0 flex items-center self-start sm:self-auto select-none">
+        <div className={cn(
+          "relative inline-flex items-center overflow-hidden h-8 w-28 backdrop-blur-xl border shadow-2xl p-0",
+          theme === "instagram" ? "rounded-full bg-slate-100/80 border-slate-200/50" : "rounded-xl bg-slate-950/60 border-white/5",
+          theme === "pixel" && "rounded-none border-2 border-white shadow-[4px_4px_0px_rgba(0,0,0,0.5)] bg-slate-950/90"
+        )}>
+          {/* Sliding Highlight Layer */}
+          <div 
+            className={cn(
+              "absolute top-0 bottom-0 transition-all duration-300 ease-out w-1/2",
+              locale === "en" ? "left-0" : "left-1/2",
+              theme === "pro" && "bg-primary shadow-[0_0_12px_rgba(0,242,255,0.25)]",
+              theme === "instagram" && "bg-white border border-slate-200/50",
+              theme === "pixel" && "bg-primary border-r border-white shadow-[2px_2px_0px_rgba(0,0,0,0.5)]"
+            )}
+          />
+
+          <button
+            onClick={() => locale !== "en" && onToggleLocale()}
+            className={cn(
+              "relative z-10 w-1/2 h-full flex items-center justify-center text-xs font-bold uppercase transition-colors duration-300 cursor-pointer select-none",
+              locale === "en"
+                ? (theme === "instagram" ? "text-slate-900 font-extrabold" : theme === "pixel" ? "text-white" : "text-black")
+                : (theme === "instagram" ? "text-slate-400 hover:text-slate-600" : "text-slate-500 hover:text-slate-300")
+            )}
+          >
+            EN
+          </button>
+
+          <button
+            onClick={() => locale !== "fr" && onToggleLocale()}
+            className={cn(
+              "relative z-10 w-1/2 h-full flex items-center justify-center text-xs font-bold uppercase transition-colors duration-300 cursor-pointer select-none",
+              locale === "fr"
+                ? (theme === "instagram" ? "text-slate-900 font-extrabold" : theme === "pixel" ? "text-white" : "text-black")
+                : (theme === "instagram" ? "text-slate-400 hover:text-slate-600" : "text-slate-500 hover:text-slate-300")
+            )}
+          >
+            FR
+          </button>
+        </div>
       </div>
     </header>
   );
